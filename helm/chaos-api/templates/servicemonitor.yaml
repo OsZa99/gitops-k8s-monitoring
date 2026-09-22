@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ .Release.Name }}-servicemonitor
+  labels:
+    app: chaos-api
+    release: prometheus-stack
+spec:
+  selector:
+    matchLabels:
+      app: chaos-api
+  endpoints:
+    - port: http
+      path: {{ .Values.metrics.path }}
+      interval: 15s
