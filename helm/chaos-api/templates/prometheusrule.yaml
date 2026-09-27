@@ -1,0 +1,28 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ .Release.Name }}-alerts
+  labels:
+    app: chaos-api
+    release: prometheus-stack 
+spec:
+  groups:
+    - name: chaos-api.rules
+      rules:
+        - alert: HighErrorRate
+          expr: sum(rate(http_requests_total{status=~"5.."}[1m])) / sum(rate(http_requests_total[1m])) > 0.20
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Taux d'erreurs élevé sur Chaos API"
+            description: "Le taux d'erreurs HTTP 5xx est supérieur à 20% depuis plus d'une minute."
+
+        - alert: HighLatency
+          expr: sum(rate(http_request_duration_seconds_sum{handler!~".*metrics.*"}[1m])) / sum(rate(http_request_duration_seconds_count{handler!~".*metrics.*"}[1m])) > 2
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Latence élevée sur Chaos API"
+            description: "Le temps de réponse moyen est supérieur à 2 secondes."
