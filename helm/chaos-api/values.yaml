@@ -28,3 +28,10 @@ metrics:
   enabled: true
   path: "/metrics"
   port: 8000
+
+ingress:
+  enabled: true
+  className: traefik
+  host: "chaos-api.local"
+  path: /
+  annotations: {}
