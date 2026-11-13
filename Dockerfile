@@ -1,4 +1,4 @@
-FROM python:3.14-slim
+FROM python:3.15-slim
 WORKDIR /app
 RUN addgroup --system appgroup && adduser --system --group appuser
 COPY requirements.txt .

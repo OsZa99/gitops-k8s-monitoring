@@ -8,7 +8,7 @@ kind create cluster --config kind-config.yaml --name gitops-cluster
 echo "[2/6] Installation de Traefik (Ingress Controller)..."
 helm repo add traefik https://traefik.github.io/charts 
 helm repo update 
-helm upgrade --install traefik traefik/traefik --namespace traefik --create-namespace --set service.type=ClusterIP --set-string nodeSelector.ingress-ready=true --set tolerations[0].key=node-role.kubernetes.io/control-plane --set tolerations[0].operator=Exists --set tolerations[0].effect=NoSchedule --set ports.web.hostPort=80 --set ports.websecure.hostPort=443
+helm upgrade --install traefik traefik/traefik --namespace traefik --create-namespace --set service.spec.type=ClusterIP --set-string nodeSelector.ingress-ready=true --set tolerations[0].key=node-role.kubernetes.io/control-plane --set tolerations[0].operator=Exists --set tolerations[0].effect=NoSchedule --set ports.web.hostPort=80 --set ports.websecure.hostPort=443
 
 echo "[3/6] Installation de Prometheus & Grafana..."
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
